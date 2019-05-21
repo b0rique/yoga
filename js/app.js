@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', function () {
     'use strict';
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
+        btn =  document.querySelectorAll('.description-btn'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
     function hideTabContent(a) {
@@ -33,7 +34,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
     //Таймер
-    let deadline = "2019-05-07";
+    let deadline = "2019-08-10";
 
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()), // В t сейчас колличество миллисекунд дата дедлайн-дата сейчас и в миллесекунда с 1.1.1970  
@@ -103,19 +104,56 @@ function setClock(id, endtime) {
             document.body.style.overflow = "";
         });
 
+        for(let i=0; i < btn.length; i++){
+            btn[i].addEventListener('click', function() {
+                overlay.style.display ="block";
+            });
+        };
 
+ //AJAX GET / POST       
+    let message = {     // ajax переменные для вывода в мольном окне
+        loading: 'Загрузка...',
+        success: 'Спасибо! Мы с вами свяжемся',
+        failure: 'Что-то пошло не так....'
+    };
+    let form = document.querySelector('.main-form'), // Парсим форму по тегам .main-form
+        input = form.getElementsByTagName('input'), // Парсим инпут
+        statusMessage = document.createElement('div'); // Создаем пустой див в форме
 
+        statusMessage.classList.add('status');  //Добавляем класс статус
+
+    form.addEventListener('submit', function(e) {   // Submit нажал - записываем ивент с формы
+        e.preventDefault();
+        form.appendChild(statusMessage);
+
+        let request = new XMLHttpRequest(); // Создаем http запрос 
+        request.open('POST', 'server.php'); // Постим через server.php
+        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //передаем в json
+        let formData = new FormData(form);
+
+        let obj = {};
+        formData.forEach(function(value, key){
+                obj[key] = value;
+        });
+        let json =JSON.stringify(obj);
+
+        request.send(json);
+
+        request.addEventListener('readystatechange', function(){
+            if (request.readyState < 4) {
+                statusMessage.innerHTML = message.loading;
+            } else if(request.readyState === 4 && request.status == 200) {
+
+           statusMessage.innerHTML = message.success;
+            } else {
+                statusMessage.innerHTML = message.failure;
+            }
+        });
+
+        for (let i = 0; i < input.length; i++){
+            input[i].value = "";
+
+        }
     });
-    
-let  btn =  document.querySelectorAll('.description-btn'),
-     overlay  = document.querySelector('.overlay');
-
-     btn.addEventListener('click', function(event) {
-        overlay.style.display ="block";
-        .classList.add('more-splash');
-        document.body.style.overflow = "hidden";
-        console.log(btn);
-}); 
-
-
-
+});
+        

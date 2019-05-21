@@ -1,0 +1,22 @@
+{
+  "name": "yoga",
+  "version": "1.0.0",
+  "description": "yoga app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b0rique/yoga.git"
+  },
+  "keywords": [
+    "yoga"
+  ],
+  "author": "b0rique",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b0rique/yoga/issues"
+  },
+  "homepage": "https://github.com/b0rique/yoga#readme"
+}
